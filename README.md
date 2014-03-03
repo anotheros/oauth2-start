@@ -18,10 +18,10 @@ oauth2 框架，搭建好的。
 4.authzserver 保存 token 到数据库，有效期为30天
 
 
-5. 客户端可以用 token 请求resourceserver 上的资源
+5.客户端可以用 token 请求resourceserver 上的资源
 
 
-6. 开发者查看自己的应用 appid，appkey，更换appkey。增加/删除应用
+6.开发者查看自己的应用 appid，appkey，更换appkey。增加/删除应用
 
 
 7.开发者查看自己开发应用 的用户数量
