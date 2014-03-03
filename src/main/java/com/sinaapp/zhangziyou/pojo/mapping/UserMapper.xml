@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.sinaapp.zhangziyou.dao.UserDao">
+
+	<resultMap id="user" type="com.sinaapp.zhangziyou.pojo.po.UserEntity">
+
+		<id column="userid" property="userId" jdbcType="VARCHAR" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="passWord" property="passWord" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="lastUpdate" property="lastUpdate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="uri" property="uri" jdbcType="VARCHAR" />
+		<result column="isAdmin" property="isAdmin" jdbcType="INTEGER" />
+	</resultMap>
+	
+
+	<sql id="UserEntity_Column_List">
+		userid, userName, `passWord`, createTime, lastUpdate, `status`, email,uri,isAdmin
+	</sql>
+
+	
+
+	<select id="getUserById" resultMap="userEntity" parameterType="java.lang.String">
+		select
+		u.userid, u.userName, `passWord`, u.createTime, u.lastUpdate, u.`status`, email
+		,uri,isAdmin
+		where u.userid = #{id,jdbcType=VARCHAR}
+	</select>
+	<select id="existUri" resultType="int" parameterType="java.lang.String">
+		select
+		count(1)
+		from `user`
+		where uri = #{uri,jdbcType=VARCHAR}
+	</select>
+	<select id="getUriByUserId" resultType="string" parameterType="java.lang.String">
+		select
+		uri
+		from `user`
+		where userId = #{userId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="getUserByEmail" resultMap="userEntity"
+		parameterType="java.lang.String">
+		select
+		u.userid, u.userName, `passWord`, u.createTime, u.lastUpdate, u.`status`, email
+		,uri,isAdmin
+		where u.email = #{email,jdbcType=VARCHAR}
+	</select>
+
+	<update id="updateUserStatus"  parameterType="java.util.HashMap">
+		update `user`
+		set `status` = #{status,jdbcType=INTEGER}
+		where userid = #{userId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateUriByUserId"  parameterType="string">
+		update `user`
+		set uri = #{uri,jdbcType=VARCHAR}
+		where userid = #{userId,jdbcType=VARCHAR}
+	</update>
+
+	<delete id="delUser" parameterType="java.lang.String">
+		delete from `user`
+		where userId = #{userId,jdbcType=VARCHAR}
+	</delete>
+
+	<delete id="delUsers">
+		delete from `user`
+		where id userId
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<insert id="save" parameterType="com.sinaapp.zhangziyou.pojo.po.UserEntity">
+		insert into `user` (userId, userName, `passWord`,
+		createTime, lastUpdate, `status`,
+		email,uri)
+		values (#{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
+		#{passWord,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{lastUpdate,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
+		#{email,jdbcType=VARCHAR},#{uri,jdbcType=VARCHAR})
+	</insert>
+
+	<update id="update"  parameterType="com.sinaapp.zhangziyou.pojo.po.UserEntity">
+		update `user`
+		set
+		<if test="userName !=null">
+			userName = #{userName,jdbcType=VARCHAR},
+		</if>
+		<if test="passWord !=null">
+			`passWord` = #{passWord,jdbcType=VARCHAR},
+		</if>
+		<if test="createTime !=null">
+			createTime = #{createTime,jdbcType=TIMESTAMP},
+		</if>
+		<if test="lastUpdate !=null">
+			lastUpdate = #{lastUpdate,jdbcType=TIMESTAMP},
+		</if>
+		<if test="status !=null">
+			`status` = #{status,jdbcType=INTEGER},
+		</if>
+		<if test="email !=null">
+			email = #{email,jdbcType=VARCHAR}
+		</if>
+		<if test="uri !=null">
+			uri = #{uri,jdbcType=VARCHAR}
+		</if>
+
+		where id = #{userId,jdbcType=VARCHAR}
+	</update>
+
+
+	<select id="existUser" resultType="int" parameterType="java.lang.String">
+		select
+		count(1)
+		from `user`
+		where userName = #{userName,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="existUserById" resultType="int" parameterType="java.lang.String">
+		select
+		count(1)
+		from `user`
+		where userId = #{userId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="existEmail" resultType="int" parameterType="java.lang.String">
+		select
+		count(1)
+		from `user`
+		where email = #{email,jdbcType=VARCHAR}
+	</select>
+
+	<select id="queryDataCount" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		select
+		count(1)
+		from `user`
+		<where> 1=1 and isAdmin = 0
+			<if test="userName !=null">
+				and userName = #{userName,jdbcType=VARCHAR}
+			</if>
+			
+		</where>
+	</select>
+
+
+
+	<select id="queryPageData" resultMap="userEntity" parameterType="java.util.HashMap">
+		select
+		<include refid="UserEntity_Column_List" />
+		from `user`
+		<where> 1=1 and isAdmin = 0
+			<if test="userName !=null">
+				and userName = #{userName,jdbcType=VARCHAR}
+			</if>
+			
+		</where>
+		limit #{startRow,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER}
+	</select>
+</mapper>
