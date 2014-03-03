@@ -15,7 +15,7 @@ oauth2 框架，搭建好的。
 3.开发者开发的客户端用appid，appkey，跳转到authzserver服务器，用户输入 用户名，密码，换token，回调到 开发者网站。细节参考aouth2 流程
 
 
-4.authzserver 保存 token 到数据库，有效期为30天。
+4.authzserver 保存 token 到数据库，有效期为30天
 
 
 5. 客户端可以用 token 请求resourceserver 上的资源
