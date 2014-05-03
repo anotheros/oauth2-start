@@ -35,5 +35,6 @@ ps：我以前开源（修改其他人开源产品）过一个权限管理系统
 
 参考sina 开发平台，或者twitter，google。
 
+可以支付宝扫描捐款
 
 ![支付宝扫描捐款](http://zhangziyou-wordpress.stor.sinaapp.com/uploads/2014/05/zhifubao.png "支付宝扫描捐款")
